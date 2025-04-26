@@ -27,3 +27,6 @@ pub const APP_WIDTH: i32 = 1024;
 
 /// Application main window height.
 pub const APP_HEIGHT: i32 = 768;
+
+/// Application project file extension.
+pub const APP_FILE_EXT: &str = ".gisproj";

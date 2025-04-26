@@ -16,6 +16,10 @@
 
 //! Project menu controller module.
 
+use gtk::{prelude::*, FileChooserAction, FileChooserDialog, glib::current_dir};
+use crate::gis::{get_project_context, config};
+use std::path::PathBuf;
+
 /// Responsible for handling "Project" menu items actions.
 #[derive(Default)]
 pub struct ProjectController;
@@ -31,7 +35,35 @@ impl ProjectController {
 
     /// "New" menu item handler.
     pub fn create_new_project(&self) {
-        todo!()
+        // Create a new file chooser dialog.
+        let dialog = FileChooserDialog::new::<gtk::Window>(
+            Some("Open File"), None, FileChooserAction::Save,
+        );
+
+        // Add buttons to the dialog.
+        dialog.add_button("Create", gtk::ResponseType::Ok.into());
+        dialog.add_button("Cancel", gtk::ResponseType::Cancel.into());
+
+        // Set the current directory for the dialog.
+        dialog.set_current_folder(&current_dir());
+        dialog.show();
+
+        // Handle the response from the dialog.
+        dialog.connect_response(move |dialog, response| {
+            if response == gtk::ResponseType::Ok {
+                if let Some(file) = dialog.filename() {
+                    // Add project file extension in the end.
+                    let path = format!(
+                        "{}{}", file.to_str().unwrap(), config::APP_FILE_EXT
+                    );
+
+                    // Save project data file to project context.
+                    let mut context = get_project_context();
+                    context.project_file = PathBuf::from(path);
+                }
+            }
+            dialog.close();
+        });
     }
 
     /// "Open" menu item handler.
