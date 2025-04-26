@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-//! View components main module.
+//! Presentation layer of the application main module.
 
 mod menu;
 pub use menu::MenuView;

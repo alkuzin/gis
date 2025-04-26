@@ -17,10 +17,12 @@
 //! GIS main module.
 
 pub mod config;
+mod model;
 mod view;
 mod controller;
 
 use gtk::{prelude::*, Application, ApplicationWindow};
+pub use model::get_project_context;
 use controller::MenuController;
 
 /// Application main window wrapper struct.
