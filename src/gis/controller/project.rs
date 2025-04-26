@@ -14,10 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-//! Controller components main module.
+//! Project menu controller module.
 
-mod menu;
-mod project;
+/// Responsible for handling "Project" menu items actions.
+#[derive(Default)]
+pub struct ProjectController;
 
-pub use menu::MenuController;
-pub use project::ProjectController;
+impl ProjectController {
+    /// Construct new project controller.
+    ///
+    /// # Returns
+    /// - New `ProjectController` object.
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// "New" menu item handler.
+    pub fn create_new_project(&self) {
+        todo!()
+    }
+
+    /// "Open" menu item handler.
+    pub fn open_project(&self) {
+        todo!()
+    }
+
+    /// "Save" menu item handler.
+    pub fn save_project(&self) {
+        todo!()
+    }
+
+    /// "Exit" menu item handler.
+    pub fn exit_project(&self) {
+        std::process::exit(0);
+    }
+}
