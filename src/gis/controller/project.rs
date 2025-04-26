@@ -25,14 +25,6 @@ use std::path::PathBuf;
 pub struct ProjectController;
 
 impl ProjectController {
-    /// Construct new project controller.
-    ///
-    /// # Returns
-    /// - New `ProjectController` object.
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     /// "New" menu item handler.
     pub fn create_new_project(&self) {
         // Create a new file chooser dialog.
@@ -41,11 +33,11 @@ impl ProjectController {
         );
 
         // Add buttons to the dialog.
-        dialog.add_button("Create", gtk::ResponseType::Ok.into());
-        dialog.add_button("Cancel", gtk::ResponseType::Cancel.into());
+        dialog.add_button("Create", gtk::ResponseType::Ok);
+        dialog.add_button("Cancel", gtk::ResponseType::Cancel);
 
         // Set the current directory for the dialog.
-        dialog.set_current_folder(&current_dir());
+        dialog.set_current_folder(current_dir());
         dialog.show();
 
         // Handle the response from the dialog.

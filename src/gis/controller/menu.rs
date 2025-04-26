@@ -34,7 +34,7 @@ impl MenuController {
     /// # Returns
     /// - New `MenuController` object.
     pub fn new() -> Self {
-        let project_controller = Rc::new(ProjectController::new());
+        let project_controller = Default::default();
         let menu_view = MenuView::new();
 
         Self { project_controller, menu_view }
@@ -54,7 +54,7 @@ impl MenuController {
     /// - Menu items vertical layout.
     #[inline(always)]
     pub fn layout(&self) -> &GtkBox {
-        &self.menu_view.layout()
+        self.menu_view.layout()
     }
 
     /// Set project menu items handlers.
