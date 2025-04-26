@@ -16,14 +16,19 @@
 
 //! GIS main module.
 
-use gtk::{prelude::*, Application, ApplicationWindow};
-
 pub mod config;
+mod view;
+mod controller;
+
+use gtk::{prelude::*, Application, ApplicationWindow};
+use controller::MenuController;
 
 /// Application main window wrapper struct.
 pub struct MainWindow {
     /// Application main window.
     window: ApplicationWindow,
+    /// Application menu controller.
+    menu_controller: MenuController,
 }
 
 impl MainWindow {
@@ -36,14 +41,19 @@ impl MainWindow {
     /// - New `MainWindow` object.
     pub fn new(app: &Application) -> Self {
         let window = ApplicationWindow::new(app);
-        window.set_title(config::APP_TITLE);
-        window.set_default_size(config::APP_WIDTH, config::APP_HEIGHT);
+        let menu_controller = MenuController::new();
 
-        Self { window }
+        Self { window, menu_controller }
     }
 
     /// Display all widgets associated with main window.
-    pub fn show(&self) {
+    pub fn show(&mut self) {
+        // Initialize main window.
+        self.window.set_title(config::APP_TITLE);
+        self.window.set_default_size(config::APP_WIDTH, config::APP_HEIGHT);
+        self.menu_controller.init();
+        self.window.add(self.menu_controller.layout());
+
         // Show all widgets.
         self.window.show_all();
     }

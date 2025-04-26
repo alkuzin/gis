@@ -14,23 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-//! GIS entry point.
+//! Controller components main module.
 
-mod gis;
-
-use gtk::{prelude::*, Application, glib::ExitCode};
-use gis::{config, MainWindow};
-
-fn main() -> ExitCode {
-    // Set up an application.
-    let flags = Default::default();
-    let app   = Application::new(Some(config::APP_ID), flags);
-
-    // Launch an application.
-    app.connect_activate(|app| {
-        let mut main_window = MainWindow::new(app);
-        main_window.show();
-    });
-
-    app.run()
-}
+mod menu;
+pub use menu::MenuController;
