@@ -23,14 +23,14 @@ mod controller;
 
 use gtk::{prelude::*, Application, ApplicationWindow};
 pub use model::get_project_context;
-use controller::MenuController;
+use controller::PanelController;
 
 /// Application main window wrapper struct.
 pub struct MainWindow {
+    /// Application main pane; controller.
+    panel_controller: PanelController,
     /// Application main window.
     window: ApplicationWindow,
-    /// Application menu controller.
-    menu_controller: MenuController,
 }
 
 impl MainWindow {
@@ -42,10 +42,10 @@ impl MainWindow {
     /// # Returns
     /// - New `MainWindow` object.
     pub fn new(app: &Application) -> Self {
-        let window = ApplicationWindow::new(app);
-        let menu_controller = MenuController::new();
+        let panel_controller = PanelController::new();
+        let window           = ApplicationWindow::new(app);
 
-        Self { window, menu_controller }
+        Self { panel_controller, window }
     }
 
     /// Display all widgets associated with main window.
@@ -53,8 +53,8 @@ impl MainWindow {
         // Initialize main window.
         self.window.set_title(config::APP_TITLE);
         self.window.set_default_size(config::APP_WIDTH, config::APP_HEIGHT);
-        self.menu_controller.init();
-        self.window.add(self.menu_controller.layout());
+        self.panel_controller.init();
+        self.window.add(self.panel_controller.layout());
 
         // Show all widgets.
         self.window.show_all();
