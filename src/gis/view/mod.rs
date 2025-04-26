@@ -17,4 +17,7 @@
 //! Presentation layer of the application main module.
 
 mod menu;
+mod map;
+
 pub use menu::MenuView;
+pub use map::MapView;
