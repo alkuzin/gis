@@ -17,13 +17,13 @@
 //! GIS main module.
 
 pub mod config;
-mod model;
+pub mod model;
 mod view;
 mod controller;
 
-use gtk::{prelude::*, Application, ApplicationWindow};
-pub use model::get_project_context;
+use gtk::{prelude::*, glib::ControlFlow, Application, ApplicationWindow};
 use controller::PanelController;
+use model::GISAction;
 
 /// Application main window wrapper struct.
 pub struct MainWindow {
@@ -41,11 +41,36 @@ impl MainWindow {
     ///
     /// # Returns
     /// - New `MainWindow` object.
-    pub fn new(app: &Application) -> Self {
-        let panel_controller = PanelController::new();
-        let window           = ApplicationWindow::new(app);
+    pub fn new(app: &Application) -> Self
+    {
+        let main_window = Self {
+            panel_controller: PanelController::new(),
+            window:           ApplicationWindow::new(app),
+        };
 
-        Self { panel_controller, window }
+        let receiver       = model::get_global_receiver();
+        let receiver_clone = receiver.clone();
+
+        // Spawn a thread to listen for messages.
+        std::thread::spawn(move || {
+            let receiver_guard = receiver_clone.lock().unwrap();
+
+            for action in receiver_guard.iter() {
+                match action {
+                    // Update map image.
+                    GISAction::MapImageUpdated => {
+                        // Use GTK's main thread for UI updates.
+                        gtk::glib::idle_add(move || {
+                            // TODO: Update UI here.
+                            println!("Map image updated!");
+                            ControlFlow::Break
+                        });
+                    }
+                }
+            }
+        });
+
+        main_window
     }
 
     /// Display all widgets associated with main window.

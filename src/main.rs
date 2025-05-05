@@ -27,7 +27,7 @@ fn main() -> ExitCode {
     let app   = Application::new(Some(config::APP_ID), flags);
 
     // Launch an application.
-    app.connect_activate(|app| {
+    app.connect_activate(move |app| {
         let mut main_window = MainWindow::new(app);
         main_window.show();
     });

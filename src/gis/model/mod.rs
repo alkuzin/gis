@@ -16,26 +16,8 @@
 
 //! Data and business logic of the application main module.
 
-use std::{path::PathBuf, sync::{LazyLock, Mutex, MutexGuard}};
+mod context;
+mod channel;
 
-/// Project data struct.
-#[derive(Debug, Default)]
-pub struct ProjectContext {
-    /// Path to project data file.
-    pub project_file: PathBuf,
-    /// Path to project map image file.
-    pub map_image_file: PathBuf,
-}
-
-/// Project context instance.
-static PROJECT_CONTEXT: LazyLock<Mutex<ProjectContext>> = LazyLock::new(|| {
-    Mutex::new(ProjectContext::default())
-});
-
-/// Get project context instance.
-///
-/// # Returns
-/// - Mutex guard for ProjectContext.
-pub fn get_project_context() -> MutexGuard<'static, ProjectContext> {
-    PROJECT_CONTEXT.lock().unwrap()
-}
+pub use context::*;
+pub use channel::*;

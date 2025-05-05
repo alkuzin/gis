@@ -17,7 +17,7 @@
 //! "Project" menu handlers.
 
 use gtk::{prelude::*, FileChooserAction, FileChooserDialog, glib::current_dir};
-use crate::gis::{get_project_context, config};
+use crate::gis::{model::get_project_context, config};
 use std::path::PathBuf;
 
 /// "New" menu item handler.
