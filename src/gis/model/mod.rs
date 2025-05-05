@@ -17,7 +17,4 @@
 //! Data and business logic of the application main module.
 
 mod context;
-mod channel;
-
 pub use context::*;
-pub use channel::*;
