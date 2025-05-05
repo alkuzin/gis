@@ -45,6 +45,7 @@ impl MenuView {
     /// Initialize menu.
     pub fn init(&mut self) {
         self.set_project_menu();
+        self.set_map_menu();
         self.layout.add(&self.menu_bar);
     }
 
@@ -91,5 +92,21 @@ impl MenuView {
         // Add project menu to menu bar.
         project_menu_item.set_submenu(Some(&project_menu));
         self.menu_bar.add(&project_menu_item);
+    }
+
+    /// Set "Map" menu.
+    fn set_map_menu(&mut self) {
+        // Create "Project" menu.
+        let map_menu_item = MenuItem::with_label("Map");
+        let map_menu      = Menu::new();
+
+        // Set project menu items.
+        let new_item = MenuItem::with_label("New");
+        map_menu.append(&new_item);
+        self.menu_items.push(Rc::new(new_item));
+
+        // Add project menu to menu bar.
+        map_menu_item.set_submenu(Some(&map_menu));
+        self.menu_bar.add(&map_menu_item);
     }
 }

@@ -23,6 +23,8 @@ use std::{path::PathBuf, sync::{LazyLock, Mutex, MutexGuard}};
 pub struct ProjectContext {
     /// Path to project data file.
     pub project_file: PathBuf,
+    /// Path to project map image file.
+    pub map_image_file: PathBuf,
 }
 
 /// Project context instance.
