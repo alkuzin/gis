@@ -17,11 +17,9 @@
 //! Intermediary between the Model and the View main module.
 
 mod menu;
-mod project;
 mod panel;
 mod map;
 
-pub use project::ProjectController;
 pub use panel::PanelController;
 pub use menu::MenuController;
 pub use map::MapController;
