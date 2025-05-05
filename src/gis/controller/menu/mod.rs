@@ -19,13 +19,16 @@
 mod project;
 mod map;
 
+use crate::gis::{controller::MapController, view::MenuView};
 use gtk::{prelude::*, Box as GtkBox};
-use crate::gis::view::MenuView;
+use std::rc::Rc;
 
 /// Responsible for handling user interactions with the menu UI.
 pub struct MenuController {
     /// Menu UI manager.
     menu_view: MenuView,
+    /// Reference to the MapController.
+    map_controller: Rc<MapController>,
 }
 
 impl MenuController {
@@ -33,8 +36,8 @@ impl MenuController {
     ///
     /// # Returns
     /// - New `MenuController` object.
-    pub fn new() -> Self {
-        Self { menu_view: MenuView::new() }
+    pub fn new(map_controller: Rc<MapController>) -> Self {
+        Self { map_controller, menu_view: MenuView::new() }
     }
 
     /// Initialize menu.
@@ -74,9 +77,14 @@ impl MenuController {
 
     /// Set "Map" menu items handlers.
     fn set_map_menu_handlers(&mut self) {
-        let menu_items = &self.menu_view.items();
+        let menu_view_clone = &self.menu_view.clone();
+        let menu_items      = menu_view_clone.items();
 
         // Set "New" menu item handler.
-        menu_items[4].connect_activate(move |_| { map::new(); });
+        let map_controller_clone = Rc::clone(&self.map_controller);
+
+        menu_items[4].connect_activate(move |_| {
+            map::new(map_controller_clone.clone());
+        });
     }
 }

@@ -21,9 +21,8 @@ pub mod model;
 mod view;
 mod controller;
 
-use gtk::{prelude::*, glib::ControlFlow, Application, ApplicationWindow};
+use gtk::{prelude::*, Application, ApplicationWindow};
 use controller::PanelController;
-use model::GISAction;
 
 /// Application main window wrapper struct.
 pub struct MainWindow {
@@ -47,28 +46,6 @@ impl MainWindow {
             panel_controller: PanelController::new(),
             window:           ApplicationWindow::new(app),
         };
-
-        let receiver       = model::get_global_receiver();
-        let receiver_clone = receiver.clone();
-
-        // Spawn a thread to listen for messages.
-        std::thread::spawn(move || {
-            let receiver_guard = receiver_clone.lock().unwrap();
-
-            for action in receiver_guard.iter() {
-                match action {
-                    // Update map image.
-                    GISAction::MapImageUpdated => {
-                        // Use GTK's main thread for UI updates.
-                        gtk::glib::idle_add(move || {
-                            // TODO: Update UI here.
-                            println!("Map image updated!");
-                            ControlFlow::Break
-                        });
-                    }
-                }
-            }
-        });
 
         main_window
     }

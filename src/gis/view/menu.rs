@@ -17,16 +17,16 @@
 //! Application menu view related declarations.
 
 use gtk::{prelude::*, Box as GtkBox, Menu, MenuBar, MenuItem};
-use std::rc::Rc;
 
 /// Responsible for managing the menu system UI.
+#[derive(Clone)]
 pub struct MenuView {
     /// Layout that holds the menu bar.
     layout: GtkBox,
     /// Bar that holds menu buttons.
     menu_bar: MenuBar,
     /// List of menu items.
-    menu_items: Vec<Rc<MenuItem>>,
+    menu_items: Vec<MenuItem>,
 }
 
 impl MenuView {
@@ -63,7 +63,7 @@ impl MenuView {
     /// # Returns
     /// - List of menu items.
     #[inline(always)]
-    pub fn items(&self) -> &Vec<Rc<MenuItem>> {
+    pub fn items(&self) -> &Vec<MenuItem> {
         &self.menu_items
     }
 
@@ -84,10 +84,10 @@ impl MenuView {
         project_menu.append(&save_item);
         project_menu.append(&exit_item);
 
-        self.menu_items.push(Rc::new(new_item));
-        self.menu_items.push(Rc::new(open_item));
-        self.menu_items.push(Rc::new(save_item));
-        self.menu_items.push(Rc::new(exit_item));
+        self.menu_items.push(new_item);
+        self.menu_items.push(open_item);
+        self.menu_items.push(save_item);
+        self.menu_items.push(exit_item);
 
         // Add project menu to menu bar.
         project_menu_item.set_submenu(Some(&project_menu));
@@ -103,7 +103,7 @@ impl MenuView {
         // Set project menu items.
         let new_item = MenuItem::with_label("New");
         map_menu.append(&new_item);
-        self.menu_items.push(Rc::new(new_item));
+        self.menu_items.push(new_item);
 
         // Add project menu to menu bar.
         map_menu_item.set_submenu(Some(&map_menu));

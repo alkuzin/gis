@@ -18,8 +18,9 @@
 
 use crate::gis::controller::{MapController, MenuController};
 use gtk::{prelude::*, Box as GtkBox};
+use std::rc::Rc;
 
-/// Responsible for TODO:
+/// Responsible for managing GIS main components.
 pub struct PanelController {
     /// Application menu controller.
     menu_controller: MenuController,
@@ -38,8 +39,9 @@ impl PanelController {
     /// # Returns
     /// - New `PanelController` object.
     pub fn new() -> Self {
-        let menu_controller = MenuController::new();
         let map_controller  = MapController::new();
+        let clone           = map_controller.clone();
+        let menu_controller = MenuController::new(Rc::new(clone));
         let main_layout     = GtkBox::new(gtk::Orientation::Vertical, 0);
         let control_layout  = GtkBox::new(gtk::Orientation::Horizontal, 0);
 

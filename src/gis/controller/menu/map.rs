@@ -20,11 +20,13 @@ use gtk::{
     FileChooserAction, FileChooserDialog, FileFilter,
     prelude::*, glib::current_dir
 };
-use crate::gis::model::{self, get_project_context, GISAction};
+use crate::gis::model::get_project_context;
 use std::path::PathBuf;
+use std::rc::Rc;
+use crate::gis::controller::MapController;
 
 /// "New" menu item handler.
-pub fn new() {
+pub fn new(map_controller: Rc<MapController>) {
     // Create a new file chooser dialog.
     let dialog = FileChooserDialog::new::<gtk::Window>(
         Some("Open File"), None, FileChooserAction::Save,
@@ -62,12 +64,9 @@ pub fn new() {
                 let mut context = get_project_context();
                 context.map_image_file = PathBuf::from(path);
 
-                // Send signal to MainWindow to update map image.
-                let sender = model::get_global_sender();
-                let sender_guard = sender.lock().unwrap();
-
-                sender_guard.send(GISAction::MapImageUpdated)
-                    .expect("Failed to send GISAction");
+                // Manually drop mutex guard in order to update map image.
+                drop(context);
+                map_controller.update();
             }
         }
         dialog.close();

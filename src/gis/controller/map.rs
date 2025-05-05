@@ -20,6 +20,7 @@ use crate::gis::view::MapView;
 use gtk::Box as GtkBox;
 
 /// Responsible for handling user interactions with map UI.
+#[derive(Clone)]
 pub struct MapController {
     /// Map UI manager.
     map_view: MapView,
@@ -37,13 +38,18 @@ impl MapController {
 
     /// Initialize map controller.
     pub fn init(&mut self) {
-        self.map_view.init()
+        self.map_view.init();
     }
 
-    /// Get panel layout.
+    /// Update map.
+    pub fn update(&self) {
+        self.map_view.update_image();
+    }
+
+    /// Get map layout.
     ///
     /// # Returns
-    /// - Main panel horizontal layout.
+    /// - Map horizontal layout.
     #[inline(always)]
     pub fn layout(&self) -> &GtkBox {
         self.map_view.layout()

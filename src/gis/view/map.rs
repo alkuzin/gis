@@ -16,9 +16,11 @@
 
 //! Map view related declarations.
 
-use gtk::Box as GtkBox;
+use crate::gis::model::get_project_context;
+use gtk::{prelude::*, Box as GtkBox};
 
 /// Responsible for managing the map UI.
+#[derive(Clone)]
 pub struct MapView {
     /// Layout that holds the map.
     layout: GtkBox,
@@ -36,15 +38,29 @@ impl MapView {
 
     /// Initialize menu.
     pub fn init(&mut self) {
-        // TODO: get map image path from project context.
-        // let image = gtk::Image::from_file(path_from_project_context);
-        // self.layout.add(&image);
     }
 
-    /// Get menu layout.
+    /// Update map image.
+    pub fn update_image(&self) {
+        // Get path to map image.
+        let context        = get_project_context();
+        let map_image_path = &context.map_image_file.as_path();
+
+        // Set image.
+        let image = gtk::Image::from_file(map_image_path);
+
+        // Clear the previous image.
+        self.layout.foreach(|child| { self.layout.remove(child); });
+
+        // Display map.
+        self.layout.add(&image);
+        self.layout.show_all();
+    }
+
+    /// Get map layout.
     ///
     /// # Returns
-    /// - Menu items vertical layout.
+    /// - Map horizontal layout.
     #[inline(always)]
     pub fn layout(&self) -> &GtkBox {
         &self.layout
